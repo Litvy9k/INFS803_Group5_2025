@@ -22,6 +22,7 @@ class User(AbstractUser):
     # username/password/date_joined/last_login/is_superuser/first_name&last_name(optional)
     # email(optional)/is_staff(for django admin)/is_active(optional, can be used to ban user)
 
+    is_moderator = models.BooleanField(default=False)
 
     nickname = models.CharField(
         max_length=30,

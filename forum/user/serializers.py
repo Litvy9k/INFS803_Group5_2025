@@ -11,7 +11,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         model  = User
         fields = [
             'username', 'password', 'nickname',
-            'avatar', 'email', 'first_name', 'last_name',
+            'avatar', 'email', 'first_name', 'last_name', 
+            'date_joined', 'last_login', 'is_moderator',
         ]
         # Required: Username, Password, Nickname
         # Optional: Email, Avatar, First name, Last name
@@ -22,6 +23,9 @@ class RegisterSerializer(serializers.ModelSerializer):
             'email':      {'required': False, 'allow_blank': True},
             'first_name': {'required': False, 'allow_blank': True},
             'last_name':  {'required': False, 'allow_blank': True},
+            'date_joined': {'read_only': True},
+            'last_login':     {'read_only': True},
+            'is_moderator':  {'read_only': True},
         }
 
     # def validate_smth(self, attrs):
