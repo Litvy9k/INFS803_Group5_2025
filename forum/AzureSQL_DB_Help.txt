@@ -1,0 +1,42 @@
+This is a quick list of all dependicies and commands required for Azure SQL Database to work
+
+Notes: I, (Tyler) use Mac so you may need to find the windows equivelant of some commands
+        Else message Tyler on discord for help / explanation
+
+        Also,
+        - python3 seems to be a mac specific command
+        - Azure SQL Database is set up using MY student account, with $99.97 left of my free credit - please do not spam :)
+
+- Create a virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+- Ensure youre using django 4.2.21 - Latest STABLE release
+pip install django==4.2.21
+
+- Azure SQL Database backend support for django
+pip install django==4.2.21
+pip install django-mssql-backend
+pip install pyodbc
+pip install djangorestframework
+pip install pillow
+pip install django-environ
+pip install djangorestframework-simplejwt
+brew install unixodbc
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release
+brew update
+HOMEBREW_ACCEPT_EULA=Y brew install msodbcsql18 mssql-tools18
+
+
+- Make migration commands 
+python3 manage.py makemigrations
+python3 manage.py migrate
+
+- Run the server
+- python3 manage.py runserver
+
+
+Relevant documentation
+https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16
+https://github.com/microsoft/mssql-django?utm_source=chatgpt.com

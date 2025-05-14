@@ -7,6 +7,9 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='auth_register'),
-    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    #Ive removed these for now so that it works with Azure SQL Database - Tyler
+    # path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
+
