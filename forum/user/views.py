@@ -6,6 +6,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from .serializers import UserUpdateSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
@@ -33,3 +35,12 @@ class LogoutView(APIView):
             return Response({"detail": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({"detail": "Logout successful"}, status=status.HTTP_205_RESET_CONTENT)
+
+class UserUpdateView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserUpdateSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser] 
+
+    def get_object(self):
+        return self.request.user

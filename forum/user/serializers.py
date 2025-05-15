@@ -49,3 +49,36 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(pwd)
         user.save()
         return user
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=False)
+    nickname = serializers.CharField(required=False)
+    password = serializers.CharField(write_only=True, required=False, min_length=8)
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'nickname', 'password', 'avatar')
+
+    def validate_email(self, value):
+        user = self.context['request'].user
+        if User.objects.exclude(pk=user.pk).filter(email__iexact=value).exists():
+            raise serializers.ValidationError("Email already in use.")
+        return value
+
+    def validate_nickname(self, value):
+        user = self.context['request'].user
+        if User.objects.exclude(pk=user.pk).filter(nickname__iexact=value).exists():
+            raise serializers.ValidationError("Nickname already in use.")
+        return value
+
+    def update(self, instance, validated_data):
+        pwd = validated_data.pop('password', None)
+        if pwd:
+            instance.set_password(pwd)
+        avatar = validated_data.pop('avatar', None)
+        if avatar is not None:
+            instance.avatar = avatar                
+        for attr, val in validated_data.items():
+            setattr(instance, attr, val)
+        instance.save()
+        return instance
