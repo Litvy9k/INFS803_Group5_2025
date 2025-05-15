@@ -2,6 +2,7 @@ hello
 
 not really a readme just seems more like it this way bruh
 
+
 Functional backend apis: 
 
 /api/user/register/
@@ -12,6 +13,7 @@ Functional backend apis:
 
 /api/user/logout/ - need do provide the refresh token
 
-/api/user/update/ update email, first/last name, password
+/api/user/update/ update email, first/last name, password and avatar
+
 
 also there will be a 405 error in DRF visualized apis but it shouldn't be a problem for frontend

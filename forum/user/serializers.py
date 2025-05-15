@@ -7,7 +7,7 @@ User = get_user_model()
 
 class RegisterSerializer(serializers.ModelSerializer):
     # Minimal 6 digits for password
-    password = serializers.CharField(write_only=True, required=True, allow_blank=False)
+    password = serializers.CharField(write_only=True, required=True, allow_blank=False, min_length=6, max_length=20)
 
     class Meta:
         model  = User
@@ -20,7 +20,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         # Optional: Email, Avatar, First name, Last name
         extra_kwargs = {
             'username':   {'required': True,  'allow_blank': False, 'min_length': 4, 'max_length': 20},
-            'password':   {'write_only': True, 'min_length': 6, 'max_length': 20},
             'nickname':   {'required': True,  'allow_blank': False, 'min_length': 1, 'max_length': 30},
             'avatar':     {'required': False, 'allow_null': True},
             'email':      {'required': False, 'allow_blank': True},
@@ -46,6 +45,11 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):   
         pwd = validated_data.pop('password')
         user = User(**validated_data)
+        avatar = validated_data.pop('avatar', None)
+        if avatar is None:
+            user.avatar = 'avatar/default.png'
+        else:
+            user.avatar = avatar
         user.set_password(pwd)
         user.save()
         return user
