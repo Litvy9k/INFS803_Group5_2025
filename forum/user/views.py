@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .serializers import UserUpdateSerializer
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
@@ -40,7 +40,7 @@ class UserUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = UserUpdateSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser] 
+    parser_classes = [MultiPartParser, FormParser, JSONParser] 
 
     def get_object(self):
         return self.request.user
