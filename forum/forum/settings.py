@@ -17,7 +17,11 @@ from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
-env.read_env(BASE_DIR / '.env')
+#env.read_env(BASE_DIR / '.env')
+
+# Allows reading of .env file on both Mac and Windows
+env.read_env(str(BASE_DIR / '.env'))
+
 
 
 # Quick-start development settings - unsuitable for production

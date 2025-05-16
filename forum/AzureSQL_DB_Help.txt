@@ -7,14 +7,24 @@ Notes: I, (Tyler) use Mac so you may need to find the windows equivelant of some
         - python3 seems to be a mac specific command
         - Azure SQL Database is set up using MY student account, with $99.97 left of my free credit - please do not spam :)
 
-- Create a virtual environment
+- Create a virtual environment 
+Mac:
 python3 -m venv venv
 source venv/bin/activate
+
+Windows:
+python -m venv venv
+.\venv\Scripts\activate
+
+- Remove a virtual environment
+Mac: rm -rf venv
+Windows: rmdir /s /q venv
 
 - Ensure youre using django 4.2.21 - Latest STABLE release
 pip install django==4.2.21
 
-- Azure SQL Database backend support for django
+- Azure SQL Database backend support for django 
+Mac:
 pip install django==4.2.21
 pip install django-mssql-backend
 pip install pyodbc
@@ -28,14 +38,30 @@ brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-rel
 brew update
 HOMEBREW_ACCEPT_EULA=Y brew install msodbcsql18 mssql-tools18
 
+Windows:
+pip install django==4.2.21
+pip install mssql-django
+pip install pyodbc
+pip install djangorestframework
+pip install python-environ
+pip install Pillow
+pip install djangorestframework-simplejwt
+
+Manually install OBDC driver: (download x64 version - first link)
+https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16
 
 - Make migration commands 
+Mac:
 python3 manage.py makemigrations
 python3 manage.py migrate
 
-- Run the server
-- python3 manage.py runserver
+Windows: 
+python manage.py makemigrations
+python manage.py migrate
 
+- Run the server
+Mac: python3 manage.py runserver
+Windows: python manage.py runserver
 
 Relevant documentation
 https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos?view=sql-server-ver16
