@@ -1,5 +1,6 @@
 @'
 .django_venv/
+db_venv/
 .env
 **/__pycache__/
 **/*.py[cod]
