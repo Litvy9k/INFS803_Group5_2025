@@ -9,7 +9,10 @@ class ForumPost(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     #author is recorded as the id (primary key) of the user who created the post
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     created_at = models.DateTimeField(default=timezone.now)
     upvotes = models.IntegerField(default=0)
 
