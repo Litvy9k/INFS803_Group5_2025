@@ -1,0 +1,8 @@
+Login:
+curl -i -X POST http://127.0.0.1:8000/api/user/login/ -H "Content-Type: application/json" -d "{\"username\":\"alice\",\"password\":\"Secret123!\"}"
+
+Delete post:
+curl -i -X DELETE http://127.0.0.1:8000/api/main/post/delete/4/ -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ3ODg0ODEzLCJpYXQiOjE3NDc4ODM5MTMsImp0aSI6IjcyMjI3ZTZiN2ExNzQ3MmM5YmZmMTEzNGI4MzFlN2VmIiwidXNlcl9pZCI6MTd9.f7ZJG6ToxHJPGyUK2mkI-9ItVfM1Bacc6tYAikE-SpM"
+
+Logout:
+curl -i -X POST http://127.0.0.1:8000/api/user/logout/ -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ3ODg1MDkzLCJpYXQiOjE3NDc4ODQxOTMsImp0aSI6IjczNWIzNDNkNzg2OTQ2NDVhZGRjMjA3OTdjOTFlZjllIiwidXNlcl9pZCI6MTd9.yIU7lTiJk9jgFIcm_GQKkAAwrLqpTrZHGqphVtBkjBw" -d "{\"refresh\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0ODQ4ODk5MywiaWF0IjoxNzQ3ODg0MTkzLCJqdGkiOiIyMjJmNjA3NGNhMjk0YTMwYjlmMDIyNGRjZjdmN2VmMyIsInVzZXJfaWQiOjE3fQ.t1b5lCxi7Qb39mRzLCGquwi7CfnGTjGZPjdQNXE3Uek\"}"
