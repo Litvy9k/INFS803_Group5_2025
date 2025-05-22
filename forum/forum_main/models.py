@@ -14,7 +14,16 @@ class ForumPost(models.Model):
         on_delete=models.CASCADE,
     )
     created_at = models.DateTimeField(default=timezone.now)
-    upvotes = models.IntegerField(default=0)
+    upvoted_by  = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='upvoted_posts',
+        blank=True,
+    )
+
+    @property
+    def upvotes(self):
+        return self.upvoted_by.count()
 
     def __str__(self):
         return self.title
+    

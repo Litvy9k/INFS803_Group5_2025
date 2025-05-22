@@ -15,9 +15,14 @@ Functional backend apis:
 
 /api/user/update/ update email, first/last name, password and avatar
 
-/api/main/post/create/
+/api/main/post/create/ - create post, login (access token) required
 
-/api/main/post/delete/<post_id> - op or moderator only ofc
+/api/main/post/delete/<post_id>/ - op or moderator only ofc
 
+/api/main/post/edit/<post_id>/ - op or moderator only ofc
+
+/api/main/post/ - get all posts, login (access token) required
+
+/api/main/post/<post_id>/ - get selected post, login (access token) required
 
 also there will be a 405 error in DRF visualized apis but it shouldn't be a problem for frontend
