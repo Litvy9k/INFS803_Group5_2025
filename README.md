@@ -25,4 +25,6 @@ Functional backend apis:
 
 /api/main/post/<post_id>/ - get selected post, login (access token) required
 
+/api/main/post/upvote/<post_id>/ - 1 upvote each post per user, call this api on already upvoted post to cancel the upvote
+
 also there will be a 405 error in DRF visualized apis but it shouldn't be a problem for frontend

@@ -20,7 +20,10 @@ Get post list:
 curl -i -X GET http://127.0.0.1:8000/api/main/post/ -H "Authorization: Bearer $ACCESS_TOKEN"
 
 Get selected post:
-curl -i -X GET http://127.0.0.1:8000/api/main/post/<post_id>/ -H "Authorization: Bearer $ACCESS_TOKEN"
+curl -i -X GET http://127.0.0.1:8000/api/main/post/$post_id/ -H "Authorization: Bearer $ACCESS_TOKEN"
 
 Edit post:
-curl -i -X PATCH http://127.0.0.1:8000/api/main/post/edit/4/ -H "Content-Type: application/json" -H "Authorization: Bearer $ACCESS_TOKEN" -d "{\"content\":\"111\"}"
+curl -i -X PATCH http://127.0.0.1:8000/api/main/post/edit/$post_id/ -H "Content-Type: application/json" -H "Authorization: Bearer $ACCESS_TOKEN" -d "{\"content\":\"111\"}"
+
+Upvote post:
+curl -i -X POST http://127.0.0.1:8000/api/main/post/upvote/$post_id/ -H "Authorization: Bearer $ACCESS_TOKEN"
