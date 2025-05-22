@@ -6,3 +6,9 @@ curl -i -X DELETE http://127.0.0.1:8000/api/main/post/delete/4/ -H "Authorizatio
 
 Logout:
 curl -i -X POST http://127.0.0.1:8000/api/user/logout/ -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ3ODg1MDkzLCJpYXQiOjE3NDc4ODQxOTMsImp0aSI6IjczNWIzNDNkNzg2OTQ2NDVhZGRjMjA3OTdjOTFlZjllIiwidXNlcl9pZCI6MTd9.yIU7lTiJk9jgFIcm_GQKkAAwrLqpTrZHGqphVtBkjBw" -d "{\"refresh\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0ODQ4ODk5MywiaWF0IjoxNzQ3ODg0MTkzLCJqdGkiOiIyMjJmNjA3NGNhMjk0YTMwYjlmMDIyNGRjZjdmN2VmMyIsInVzZXJfaWQiOjE3fQ.t1b5lCxi7Qb39mRzLCGquwi7CfnGTjGZPjdQNXE3Uek\"}"
+
+Register:
+curl -i -X POST http://127.0.0.1:8000/api/user/register/ -H "Content-Type: application/json" -d "{\"username\":\"whatever\",\"password\":\"wh4tever\",\"email\":\"whatever@whatever.com\",\"nickname\":\"whatever\"}"
+
+Create post:
+curl -i -X POST http://127.0.0.1:8000/api/main/post/create/ -H "Content-Type: application/json" -H "Authorization: Bearer $ACCESS_TOKEN" -d "{\"title\":\"POST DELETE TEST\",\"content\":\"whatever man\"}"

@@ -7,5 +7,5 @@ class IsAuthorOrAdmin(permissions.BasePermission):
             return True
         return (
             request.user and
-            (request.user.is_staff or obj.author.id == request.user.id)
+            (request.user.is_moderator or obj.author.id == request.user.id)
         )
