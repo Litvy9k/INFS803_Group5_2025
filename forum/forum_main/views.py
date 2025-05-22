@@ -8,3 +8,15 @@ class PostCreateView(generics.CreateAPIView):
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
+
+class PostDeleteView(generics.RetrieveDestroyAPIView):
+    queryset = ForumPost.objects.all()
+    serializer_class = PostSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes     = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        perms = super().get_permissions()
+        if self.request.method == 'DELETE':
+            perms.append(permissions.IsAdminUser() if not self.request.user.is_staff else permissions.AllowAny())
+        return perms
