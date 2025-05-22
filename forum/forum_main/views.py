@@ -21,3 +21,16 @@ class PostEditView(generics.RetrieveUpdateAPIView):
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes     = [IsAuthorOrMod]
+
+class PostListView(generics.ListAPIView):
+    queryset = ForumPost.objects.all().order_by('-created_at')
+    serializer_class = PostSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes     = [permissions.IsAuthenticated]
+
+    
+class PostGetView(generics.RetrieveAPIView):
+    queryset = ForumPost.objects.all()
+    serializer_class = PostSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes     = [permissions.IsAuthenticated]
