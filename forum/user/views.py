@@ -1,13 +1,16 @@
 from django.shortcuts import render
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
-from .serializers import RegisterSerializer
+from .serializers import RegisterSerializer, UserSerializer
+from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .serializers import UserUpdateSerializer
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+
+User = get_user_model()
 
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
@@ -44,3 +47,24 @@ class UserUpdateView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+    
+
+class CurrentUserView(generics.RetrieveAPIView):
+    serializer_class       = UserSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes     = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+    
+class UserDetailView(generics.RetrieveAPIView):
+    queryset               = User.objects.all()
+    serializer_class       = UserSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes     = [permissions.IsAuthenticated]
+
+class UserListView(generics.ListAPIView):
+    queryset               = User.objects.all().order_by('id')
+    serializer_class       = UserSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes     = [permissions.IsAuthenticated]

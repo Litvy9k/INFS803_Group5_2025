@@ -99,7 +99,7 @@ class ReplyUpvoteView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticatedAndActive]
     
-    def reply(self, request, pk):
+    def post(self, request, pk):
         reply = get_object_or_404(Reply, pk=pk)
         user = request.user
 

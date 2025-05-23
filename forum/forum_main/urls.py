@@ -25,5 +25,5 @@ urlpatterns = [
     path('post/<int:post_pk>/reply/', ReplyListByPostView.as_view(), name='reply-list-by-post'),
     path('post/reply/delete/<int:pk>/', ReplyDeleteView.as_view(), name='reply-delete'),
     path('post/reply/edit/<int:pk>/', ReplyEditView.as_view(), name='reply-edit'),
-    path('post/reply/upvote/<int:pk>/', ReplyEditView.as_view(), name='reply-edit')
+    path('post/reply/upvote/<int:pk>/', ReplyUpvoteView.as_view(), name='reply-upvote')
 ]
