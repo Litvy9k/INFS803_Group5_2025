@@ -1,8 +1,8 @@
 from rest_framework import generics, permissions, status
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import ForumPost
-from .serializers import PostSerializer
-from .permissions import IsAuthorOrMod
+from .models import ForumPost, Reply
+from .serializers import PostSerializer, ReplySerializer
+from .permissions import IsAuthorOrMod, IsAuthenticatedAndActive
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts    import get_object_or_404
@@ -11,36 +11,36 @@ class PostCreateView(generics.CreateAPIView):
     queryset = ForumPost.objects.all()
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticatedAndActive]
 
 class PostDeleteView(generics.RetrieveDestroyAPIView):
     queryset = ForumPost.objects.all()
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes     = [IsAuthorOrMod]
+    permission_classes = [IsAuthorOrMod]
 
 class PostEditView(generics.RetrieveUpdateAPIView):
     queryset = ForumPost.objects.all()
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes     = [IsAuthorOrMod]
+    permission_classes = [IsAuthorOrMod]
 
 class PostListView(generics.ListAPIView):
     queryset = ForumPost.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes     = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     
 class PostGetView(generics.RetrieveAPIView):
     queryset = ForumPost.objects.all()
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
-    permission_classes     = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 class PostUpvoteView(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes     = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticatedAndActive]
     
     def post(self, request, pk):
         post = get_object_or_404(ForumPost, pk=pk)
@@ -55,5 +55,62 @@ class PostUpvoteView(APIView):
 
         return Response({
             'upvotes': post.upvotes,
+            'upvoted': upvoted
+        }, status=status.HTTP_200_OK)
+    
+class ReplyCreateView(generics.CreateAPIView):
+    serializer_class = ReplySerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticatedAndActive]
+
+    def perform_create(self, serializer):
+        post = get_object_or_404(ForumPost, pk=self.kwargs['post_pk'])
+        parent = None
+        if 'parent_pk' in self.kwargs:
+            parent = get_object_or_404(Reply, pk=self.kwargs['parent_pk'])
+        serializer.save(
+            author=self.request.user,
+            post=post,
+            parent=parent
+        )
+
+class ReplyListByPostView(generics.ListAPIView):
+    serializer_class = ReplySerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        post_id = self.kwargs['post_pk']
+        return Reply.objects.filter(post_id=post_id).order_by('created_at')
+
+class ReplyDeleteView(generics.RetrieveDestroyAPIView):
+    queryset = Reply.objects.all()
+    serializer_class = ReplySerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthorOrMod]
+
+class ReplyEditView(generics.RetrieveUpdateAPIView):
+    queryset = Reply.objects.all()
+    serializer_class = ReplySerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthorOrMod]
+
+class ReplyUpvoteView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticatedAndActive]
+    
+    def reply(self, request, pk):
+        reply = get_object_or_404(Reply, pk=pk)
+        user = request.user
+
+        if reply.upvoted_by.filter(pk=user.pk).exists():
+            reply.upvoted_by.remove(user)
+            upvoted = False
+        else:
+            reply.upvoted_by.add(user)
+            upvoted = True
+
+        return Response({
+            'upvotes': reply.upvotes,
             'upvoted': upvoted
         }, status=status.HTTP_200_OK)

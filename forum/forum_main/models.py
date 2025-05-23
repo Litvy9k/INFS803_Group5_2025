@@ -27,3 +27,34 @@ class ForumPost(models.Model):
     def __str__(self):
         return self.title
     
+class Reply(models.Model):
+    post        = models.ForeignKey(
+        ForumPost,
+        on_delete=models.CASCADE,
+        related_name='replies'
+    )
+    author      = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='replies'
+    )
+    content     = models.TextField()
+    created_at  = models.DateTimeField(default=timezone.now)
+
+    parent      = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name='+'
+    )
+
+    upvoted_by  = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='upvoted_replies',
+        blank=True,
+    )
+
+    @property
+    def upvotes(self):
+        return self.upvoted_by.count()
