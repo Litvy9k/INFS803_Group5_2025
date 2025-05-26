@@ -1,4 +1,5 @@
-from rest_framework import generics, permissions, status
+from django.db.models import Count
+from rest_framework import generics, permissions, status, filters
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import ForumPost, Reply
 from .serializers import PostSerializer, ReplySerializer
@@ -114,3 +115,28 @@ class ReplyUpvoteView(APIView):
             'upvotes': reply.upvotes,
             'upvoted': upvoted
         }, status=status.HTTP_200_OK)
+    
+class SortedPostListView(generics.ListAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes     = [permissions.AllowAny]
+    serializer_class       = PostSerializer
+
+    queryset = ForumPost.objects.annotate(
+        reply_count=Count('replies')
+    )
+
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['upvotes', 'latest_reply_time', 'reply_count']
+    ordering = ['-upvotes']
+
+class PostSearchView(generics.ListAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes     = [permissions.IsAuthenticated]
+    serializer_class       = PostSerializer
+
+    queryset = ForumPost.objects.annotate(
+        reply_count=Count('replies')
+    )
+
+    filter_backends = [filters.SearchFilter]
+    search_fields   = ['title', 'content']
