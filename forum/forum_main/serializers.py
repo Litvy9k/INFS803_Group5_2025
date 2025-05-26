@@ -6,7 +6,7 @@ class PostSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault()
     )
     created_at = serializers.DateTimeField(read_only=True)
-    upvotes = serializers.IntegerField(read_only=True)
+    upvotes = serializers.IntegerField(source='upvotes_count', read_only=True)
 
     class Meta:
         model = ForumPost

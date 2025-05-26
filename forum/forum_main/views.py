@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Max
 from rest_framework import generics, permissions, status, filters
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import ForumPost, Reply
@@ -118,25 +118,27 @@ class ReplyUpvoteView(APIView):
     
 class SortedPostListView(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes     = [permissions.AllowAny]
-    serializer_class       = PostSerializer
+    permission_classes = [permissions.AllowAny]
+    serializer_class = PostSerializer
 
     queryset = ForumPost.objects.annotate(
-        reply_count=Count('replies')
+        reply_count = Count('replies'),
+        latest_reply_time = Max('replies__created_at'),
+        upvotes_count = Count('upvoted_by')
     )
 
     filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['upvotes', 'latest_reply_time', 'reply_count']
-    ordering = ['-upvotes']
+    ordering_fields = ['upvotes_count', 'latest_reply_time', 'reply_count']
+    ordering = ['-upvotes_count']
 
 class PostSearchView(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes     = [permissions.IsAuthenticated]
-    serializer_class       = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = PostSerializer
 
     queryset = ForumPost.objects.annotate(
         reply_count=Count('replies')
     )
 
     filter_backends = [filters.SearchFilter]
-    search_fields   = ['title', 'content']
+    search_fields = ['title', 'content']
