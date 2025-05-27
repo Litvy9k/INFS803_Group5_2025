@@ -1,26 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --primary-color: #1b9f67;
+  --background-color: #1f1e33;
+  --text-color: #ffffff;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif;
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply bg-[#1b9f67] hover:bg-[#158a56] text-white font-medium py-2 px-4 rounded-md transition-colors duration-200;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent hover:bg-[#2c2b4d] text-white border border-[#1b9f67] font-medium py-2 px-4 rounded-md transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-[#2c2b4d] rounded-lg p-6 shadow-md border-l-4 border-[#1b9f67];
+  }
+
+  .nav-link {
+    @apply text-white hover:text-[#1b9f67] transition-colors duration-200;
+  }
 }
