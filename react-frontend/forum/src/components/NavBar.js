@@ -10,6 +10,7 @@ const Navbar = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [loggingOut, setloggingOut] = useState(false);
 
     // Check if user is logged in on component mount
     useEffect(() => {
@@ -38,6 +39,7 @@ const Navbar = () => {
     }, []);
 
     const handleLogout = async () => {
+        setloggingOut(true)
         await userAPI.logout();
         setUser(null);
         setIsUserMenuOpen(false);
@@ -59,33 +61,20 @@ const Navbar = () => {
 
                         {/* Logo */}
                         <Link href="/" className="flex items-center space-x-3 mx-8">
-                            <img src="logo.png" alt="logo" className='w-40' />
+                            <img src="/logo.png" alt="logo" className='w-40' />
 
                         </Link>
 
-                        {/* Search Field */}
-                        <div className="relative flex-shrink-0">
-                            <input
-                                type="text"
-                                placeholder="Search forums..."
-                                className="bg-secondary/60 border border-primary/40 rounded-full py-3 px-5 pl-12 text-base text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/60 focus:border-primary transition-all duration-200 w-80 shadow-lg"
-                            />
-                            <svg
-                                className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                />
-                            </svg>
-                        </div>
+                        {/* Search Link  */}
+                        <Link
+                            href="/posts/search"
+                            className="nav-link font-semibold text-lg text-gray-300 hover:text-primary transition-colors duration-200 whitespace-nowrap hover:scale-105 transform"
+                        >
+                            Search
+                        </Link>
                     </div>
-
+                </div>
+                <div className='absolute right-1/10 md:right-1/7 top-6'>
                     {/* Right side - User Actions */}
                     <div className="hidden md:flex items-center space-x-4 flex-shrink-0 ml-8">
                         {user ? (
@@ -93,7 +82,7 @@ const Navbar = () => {
                             <div className="relative">
                                 <button
                                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                                    className="flex items-center space-x-3 bg-secondary/30 hover:bg-secondary/50 rounded-full py-2 px-4 transition-all duration-200 border border-primary/20 hover:border-primary/40"
+                                    className="flex items-center space-x-3 bg-secondary/30 hover:bg-secondary/50 rounded-full py-2 px-4 transition-all duration-200 border border-primary/20 hover:cursor-pointer"
                                 >
                                     <img
                                         src={user.avatar}
@@ -145,12 +134,19 @@ const Navbar = () => {
                                                 Replied Posts
                                             </Link>
                                             <div className="border-t border-primary/20 mt-1">
-                                                <button
-                                                    onClick={handleLogout}
-                                                    className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors duration-200"
-                                                >
-                                                    Sign Out
-                                                </button>
+                                                {loggingOut ?
+                                                    <button
+                                                        onClick={handleLogout}
+                                                        className="w-full text-left px-4 py-2 text-sm text-red-400 disabled"
+                                                    >
+                                                        Signing Out...
+                                                    </button> :
+                                                    <button
+                                                        onClick={handleLogout}
+                                                        className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors duration-200"
+                                                    >
+                                                        Sign Out
+                                                    </button>}
                                             </div>
                                         </div>
                                     </div>

@@ -88,6 +88,7 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>Latest</span>
+                  {sortOrder === "latest" ? <div className="w-1 h-full bg-[#1b9f67] mx-auto" /> : <div className="w-1 h-full bg-transparent mx-auto" />}
                 </button>
 
                 <button
@@ -101,6 +102,7 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
                   <span>Popular</span>
+                  {sortOrder === "popular" ? <div className="w-1 h-full bg-[#1b9f67] mx-auto" /> : <div className="w-1 h-full bg-transparent mx-auto" />}
                 </button>
               </div>
             </div>
@@ -140,6 +142,7 @@ export default function Home() {
                   <h3 className="text-xl font-medium text-gray-300 mb-2">No posts found</h3>
                   <p className="text-gray-400 mb-4">Be the first to start a discussion!</p>
                   <button className="btn-primary">
+                    {/* TODO */}
                     Create Post
                   </button>
                 </div>
