@@ -1,10 +1,15 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 from .models import ForumPost, Reply
+    
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ('id', 'username', 'email')
 
 class PostSerializer(serializers.ModelSerializer):
-    author = serializers.HiddenField(
-        default=serializers.CurrentUserDefault()
-    )
+    author = UserSerializer(read_only=True)
+
     created_at = serializers.DateTimeField(read_only=True)
     upvotes = serializers.IntegerField(source='upvotes_count', read_only=True)
 
