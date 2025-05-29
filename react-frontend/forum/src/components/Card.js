@@ -93,7 +93,7 @@ const PostCard = ({
                     /> */}
                     <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-primary truncate">
-                            {author?.nickname || 'Anonymous'}
+                            {author.nickname || author.username || 'Anonymous'}
                         </p>
                         <p className="text-xs text-gray-400">
                             {formatTimeAgo(created_at)}

@@ -158,6 +158,16 @@ export const postsAPI = {
     },
 
     /**
+     * Get a post's replies
+     * 
+     * @param {number} postId - Post ID
+     * @returns {Promise} - List of replies
+     */
+    getReplies: (postId) => {
+        return fetchAPI(`/api/main/post/${postId}/reply`);
+    },
+
+    /**
      * Create a new post
      * 
      * @param {Object} postData - New post data
@@ -169,6 +179,37 @@ export const postsAPI = {
         return fetchAPI('/api/main/post/create/', {
             method: 'POST',
             body: JSON.stringify(postData),
+        });
+    },
+
+    /**
+     * Create a new reply in regard to a post
+     * 
+     * @param {Object} replyData - New reply data
+     * @param {string} replyData.content - Reply content
+     * @param {number} replyData.postId - Reply Post ID
+     * @returns {Promise} - Created reply
+     */
+    createPostReply: (replyData) => {
+        return fetchAPI(`/api/main/post/${replyData.postId}/reply/create/`, {
+            method: 'POST',
+            body: JSON.stringify(replyData),
+        });
+    },
+
+    /**
+     * Create a new reply in regard to a reply
+     * 
+     * @param {Object} replyData - New reply data
+     * @param {string} replyData.content - Reply content
+     * @param {number} replyData.postId - Reply Post ID
+     * @param {number} replyData.replyId - Reply Reply ID
+     * @returns {Promise} - Created reply
+     */
+    createReplyReply: (replyData) => {
+        return fetchAPI(`/api/main/post/${replyData.postId}/reply/create/${replyData.replyId}/`, {
+            method: 'POST',
+            body: JSON.stringify(replyData),
         });
     },
 
@@ -223,7 +264,22 @@ export const postsAPI = {
             method: 'POST',
         });
     },
+
+    /**
+     * Upvote a reply
+     * 
+     * @param {number} replyId - Reply ID
+     * @returns {Promise} - Updated reply with new upvote count
+     */
+    upvoteReply: (replyId) => {
+        return fetchAPI(`/api/main/post/reply/upvote/${replyId}/`, {
+            method: 'POST',
+        });
+    },
+
 }
+
+
 
 
 /**

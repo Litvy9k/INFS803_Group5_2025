@@ -3,6 +3,7 @@
 2. create post ✔
 3. create reply
 4. account profile
+5. Manage my posts
 
 
 # future features
