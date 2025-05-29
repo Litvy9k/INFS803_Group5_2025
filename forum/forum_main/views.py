@@ -14,6 +14,9 @@ class PostCreateView(generics.CreateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticatedAndActive]
 
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
 class PostDeleteView(generics.RetrieveDestroyAPIView):
     queryset = ForumPost.objects.all()
     serializer_class = PostSerializer
