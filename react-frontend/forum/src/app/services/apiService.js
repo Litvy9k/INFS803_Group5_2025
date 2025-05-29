@@ -166,7 +166,7 @@ export const postsAPI = {
      * @returns {Promise} - Created post
      */
     createPost: (postData) => {
-        return fetchAPI('/api/main/post/', {
+        return fetchAPI('/api/main/post/create/', {
             method: 'POST',
             body: JSON.stringify(postData),
         });

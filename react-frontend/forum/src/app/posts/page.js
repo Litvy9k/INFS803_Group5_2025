@@ -26,8 +26,8 @@ export default function PostsListPage() {
             const params = {
                 page: page,
                 page_size: postsPerPage,
-                ordering: order === 'desc' ? `-${sort === 'recent' ? 'last_replied_at' : 'upvotes'}` :
-                    `${sort === 'recent' ? 'last_replied_at' : 'upvotes'}`
+                ordering: order === 'desc' ? `-${sort === 'recent' ? 'last_reply_time' : 'upvotes_count'}` :
+                    `${sort === 'recent' ? 'last_reply_time' : 'upvotes_count'}`
             };
 
             const response = await postsAPI.getPosts(params);
@@ -94,12 +94,13 @@ export default function PostsListPage() {
                     </div>
 
                     {/* Create Post Button */}
-                    <Link href="/posts/create" className="btn-primary">
+                    {localStorage.getItem('auth_token') ? <Link href="/posts/create" className="btn-primary flex">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                         </svg>
                         New Post
-                    </Link>
+                    </Link> :
+                        <div className="text-[#2dde94]">Sign in to post a new topic!</div>}
                 </div>
 
                 {/* Sort Controls */}
