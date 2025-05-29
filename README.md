@@ -39,7 +39,7 @@ Functional backend apis:
 
 /api/main/post/search/?search=<content> - Logged in only, searching title and content
 
-/api/main/post/sorted/?ordering=-upvotes_count&-reply_count&-latest_reply_time - Allow any, remove the - to get ascending order
+/api/main/post/sorted/?ordering=-upvotes&-reply_count&-latest_reply_time - Allow any, remove the - to get ascending order
 
 ====================REPLY RELATED:====================
 

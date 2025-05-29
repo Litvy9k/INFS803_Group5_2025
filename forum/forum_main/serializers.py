@@ -5,17 +5,16 @@ from .models import ForumPost, Reply
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('id', 'username', 'email')
+        fields = ('id', 'username', 'nickname')
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
-
     created_at = serializers.DateTimeField(read_only=True)
-    upvotes = serializers.IntegerField(source='upvotes_count', read_only=True)
+    upvotes_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = ForumPost
-        fields = ('id', 'title', 'content', 'author', 'created_at', 'upvotes')
+        fields = ('id', 'title', 'content', 'author', 'created_at', 'upvotes_count')
 
 class ReplySerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')

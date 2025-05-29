@@ -55,7 +55,7 @@ class PostUpvoteView(APIView):
             upvoted = True
 
         return Response({
-            'upvotes': post.upvotes,
+            'upvotes_count': post.upvotes_count,
             'upvoted': upvoted
         }, status=status.HTTP_200_OK)
     
@@ -124,12 +124,12 @@ class SortedPostListView(generics.ListAPIView):
     queryset = ForumPost.objects.annotate(
         reply_count = Count('replies'),
         latest_reply_time = Max('replies__created_at'),
-        upvotes_count = Count('upvoted_by')
+        upvotes = Count('upvoted_by')
     )
 
     filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['upvotes_count', 'latest_reply_time', 'reply_count']
-    ordering = ['-upvotes_count']
+    ordering_fields = ['upvotes', 'latest_reply_time', 'reply_count']
+    ordering = ['-upvotes']
 
 class PostSearchView(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
