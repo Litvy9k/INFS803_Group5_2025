@@ -41,6 +41,10 @@ Functional backend apis:
 
 /api/main/post/sorted/?ordering=-upvotes&-reply_count&-latest_reply_time - Allow any, remove the - to get ascending order
 
+/api/main/post/user/current/ - Logged in only, get posts by current user
+
+/api/main/post/user/<user_id>/ - Logged in only, get posts by selected user
+
 ====================REPLY RELATED:====================
 
 /post/<post_id>/reply/create/ - Logged in and 'is_active = True' (not banned) only, reply to a post

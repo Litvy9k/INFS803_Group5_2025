@@ -1,4 +1,5 @@
 from django.db.models import Count, Max
+from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions, status, filters
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import ForumPost, Reply
@@ -7,6 +8,8 @@ from .permissions import IsAuthorOrMod, IsAuthenticatedAndActive
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts    import get_object_or_404
+
+User = get_user_model()
 
 class PostCreateView(generics.CreateAPIView):
     queryset = ForumPost.objects.all()
@@ -145,3 +148,21 @@ class PostSearchView(generics.ListAPIView):
 
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'content']
+
+class CurrentUserPostView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return ForumPost.objects.filter(author=self.request.user).order_by('-created_at')
+    
+class PostByUserView(generics.ListAPIView):
+    serializer_class = PostSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        get_object_or_404(User, id=user_id)
+        return ForumPost.objects.filter(author__id=user_id).order_by('-created_at')

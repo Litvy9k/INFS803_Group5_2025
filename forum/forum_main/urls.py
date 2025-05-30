@@ -12,7 +12,9 @@ from .views import (
     ReplyEditView,
     ReplyUpvoteView,
     SortedPostListView,
-    PostSearchView
+    PostSearchView,
+    CurrentUserPostView,
+    PostByUserView
 )
 
 urlpatterns = [
@@ -30,4 +32,6 @@ urlpatterns = [
     path('post/reply/upvote/<int:pk>/', ReplyUpvoteView.as_view(), name='reply-upvote'),
     path('post/sorted/', SortedPostListView.as_view(), name='post-list-sorted'),
     path('post/search/', PostSearchView.as_view(), name='post-search'),
+    path('post/user/current/', CurrentUserPostView.as_view(), name='get-current-user-post'),
+    path('post/user/<int:user_id>/', PostByUserView.as_view(), name='get-user-post')
 ]
