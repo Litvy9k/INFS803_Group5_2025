@@ -68,7 +68,7 @@ export default function PostRow({ post, formatRelativeTime }) {
                         />
                     </svg>
                     <span className="text-white text-sm font-medium">
-                        {post.upvotes || 0}
+                        {post.upvotes_count || 0}
                     </span>
                 </div>
             </div>

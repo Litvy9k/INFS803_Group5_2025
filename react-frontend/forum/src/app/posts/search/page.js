@@ -233,7 +233,7 @@ export default function SearchResults() {
                                     id={post.id}
                                     title={post.title}
                                     content={post.content}
-                                    upvotes={post.upvotes || 0}
+                                    upvotes={post.upvotes_count || 0}
                                     reply_count={post.reply_count || 0}
                                     author={post.author || { username: 'Anonymous', nickname: 'Anonymous' }}
                                     created_at={post.created_at}

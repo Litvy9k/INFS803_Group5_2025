@@ -26,8 +26,8 @@ export default function PostsListPage() {
             const params = {
                 page: page,
                 page_size: postsPerPage,
-                ordering: order === 'desc' ? `-${sort === 'recent' ? 'last_reply_time' : 'upvotes_count'}` :
-                    `${sort === 'recent' ? 'last_reply_time' : 'upvotes_count'}`
+                ordering: order === 'desc' ? `-${sort === 'recent' ? 'last_reply_time' : 'upvotes'}` :
+                    `${sort === 'recent' ? 'last_reply_time' : 'upvotes'}`
             };
 
             const response = await postsAPI.getPosts(params);
@@ -198,6 +198,8 @@ export default function PostsListPage() {
                                         <PostRow
                                             key={post.id}
                                             post={post}
+                                            upvotes={post.upvotes_count || post.upvotes || 0}
+                                            latest_reply_time={post.latest_reply_time}
                                             formatRelativeTime={formatRelativeTime}
                                         />
                                     ))}

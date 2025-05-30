@@ -21,7 +21,7 @@ export default function Home() {
 
       // Set ordering parameter based on sort type
       if (sort === 'popular') {
-        params.ordering = '-upvotes_count'; // Most upvoted first
+        params.ordering = '-upvotes'; // Most upvoted first
       } else {
         params.ordering = '-latest_reply_time'; // Most recent replied first
       }

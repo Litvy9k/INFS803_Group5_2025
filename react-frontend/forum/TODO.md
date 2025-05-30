@@ -1,7 +1,7 @@
 # to be implemented
 1. search ✔
 2. create post ✔
-3. create reply
+3. create reply ✔
 4. account profile
 5. Manage my posts
 

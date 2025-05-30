@@ -120,7 +120,7 @@ export const postsAPI = {
     /**
      * Get a list of posts 
      * Available query strings: 
-     *      ordering=upvotes_count||-upvotes_count||reply_count||-reply_count||latest_reply_time||-latest_reply_time
+     *      ordering=upvotes||-upvotes||reply_count||-reply_count||latest_reply_time||-latest_reply_time
      *      
      * 
      * @param {Object} params - Query parameters
