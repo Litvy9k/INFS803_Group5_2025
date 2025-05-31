@@ -1,0 +1,35 @@
+Login:
+curl -i -X POST http://127.0.0.1:8000/api/user/login/ -H "Content-Type: application/json" -d "{\"username\":\"alice\",\"password\":\"Secret123!\"}"
+
+Refresh login:
+curl -i -X POST http://127.0.0.1:8000/api/user/login/refresh/ -H "Content-Type: application/json" -d "{/"refresh/":/"$REFRESH_TOKEN/"}"
+
+Delete post:
+curl -i -X DELETE http://127.0.0.1:8000/api/main/post/delete/4/ -H "Authorization: Bearer $ACCESS_TOKEN
+
+Logout:
+curl -i -X POST http://127.0.0.1:8000/api/user/logout/ -H "Content-Type: application/json" -H "Authorization: Bearer $ACCESS_TOKEN" -d "{\"refresh\":\"$REFRESH_TOKEN\"}"
+
+Register:
+curl -i -X POST http://127.0.0.1:8000/api/user/register/ -H "Content-Type: application/json" -d "{\"username\":\"whatever\",\"password\":\"wh4tever\",\"email\":\"whatever@whatever.com\",\"nickname\":\"whatever\"}"
+
+Create post:
+    curl -i -X POST http://127.0.0.1:8000/api/main/post/create/ -H "Content-Type: application/json" -H "Authorization: Bearer $ACCESS_TOKEN" -d "{\"title\":\"POST DELETE TEST\",\"content\":\"whatever man\"}"
+
+Get post list:
+curl -i -X GET http://127.0.0.1:8000/api/main/post/ -H "Authorization: Bearer $ACCESS_TOKEN"
+
+Get selected post:
+curl -i -X GET http://127.0.0.1:8000/api/main/post/$post_id/ -H "Authorization: Bearer $ACCESS_TOKEN"
+
+Edit post:
+curl -i -X PATCH http://127.0.0.1:8000/api/main/post/edit/$post_id/ -H "Content-Type: application/json" -H "Authorization: Bearer $ACCESS_TOKEN" -d "{\"content\":\"111\"}"
+
+Upvote post:
+curl -i -X POST http://127.0.0.1:8000/api/main/post/upvote/$post_id/ -H "Authorization: Bearer $ACCESS_TOKEN"
+
+Sort post:
+curl -i -X GET "http://127.0.0.1:8000/api/main/post/sorted/?ordering=-upvotes" -H "Authorization: Bearer $ACCESS_TOKEN"
+
+Search post:
+curl -i -X GET "http://127.0.0.1:8000/api/main/post/search/?search=<content>" -H "Authorization: Bearer $ACCESS_TOKEN"

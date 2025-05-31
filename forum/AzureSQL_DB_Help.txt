@@ -5,7 +5,7 @@ Notes: I, (Tyler) use Mac so you may need to find the windows equivelant of some
 
         Also,
         - python3 seems to be a mac specific command
-        - Azure SQL Database is set up using MY student account, with $99.97 left of my free credit - please do not spam :)
+        - Azure SQL Database is set up using MY student account, with $99 left of my free credit - please do not spam :)
 
 - Create a virtual environment 
 Mac:

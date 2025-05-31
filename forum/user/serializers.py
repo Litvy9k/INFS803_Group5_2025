@@ -85,3 +85,13 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             setattr(instance, attr, val)
         instance.save()
         return instance
+    
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = User
+        fields = (
+            'id', 'username', 'email',
+            'first_name', 'last_name',
+            'nickname', 'avatar'
+        )
+        read_only_fields = fields
