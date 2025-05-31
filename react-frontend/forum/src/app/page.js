@@ -158,7 +158,7 @@ export default function Home() {
                     reply_count={post.reply_count || 0}
                     author={post.author}
                     created_at={post.created_at}
-                    latest_reply_time={post.latest_reply_time}
+                    latest_reply_time={post.last_replied_at}
                     user_has_upvoted={post.user_has_upvoted || false}
                   />
                 ))

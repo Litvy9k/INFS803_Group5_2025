@@ -86,11 +86,11 @@ const PostCard = ({
             {/* Post Header */}
             <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center space-x-3 flex-1">
-                    {/* <img
+                    <img
                         src={author.avatar}
                         alt="Author Avatar"
                         className="w-8 h-8 rounded-full ring-2 ring-primary/20"
-                    /> */}
+                    />
                     <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-primary truncate">
                             {author.nickname || author.username || 'Anonymous'}

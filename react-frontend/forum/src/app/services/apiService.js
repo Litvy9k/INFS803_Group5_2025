@@ -133,6 +133,25 @@ export const postsAPI = {
     },
 
     /**
+     * Get a list of posts of the current user
+     * @returns {Promise} - Paginated list of posts
+     */
+    getCurrentUserPosts: () => {
+        const endpoint = '/api/main/post/user/current/';
+        return fetchAPI(endpoint);
+    },
+
+    /**
+     * Get a list of posts of the selected user
+     * @param {number} userID - Selected user ID
+     * @returns {Promise} - Paginated list of posts
+     */
+    getUserPosts: (userID) => {
+        const endpoint = `/api/main/post/user/${userID}/`;
+        return fetchAPI(endpoint);
+    },
+
+    /**
          * Get a list search results
          * Available query strings: 
          *      search=<query>
@@ -221,22 +240,8 @@ export const postsAPI = {
      * @returns {Promise} - Updated post
      */
     updatePost: (postId, postData) => {
-        return fetchAPI(`/api/main/post/${postId}/`, {
+        return fetchAPI(`/api/main/post/edit/${postId}/`, {
             method: 'PUT',
-            body: JSON.stringify(postData),
-        });
-    },
-
-    /**
-     * Partially update an existing post
-     * 
-     * @param {number} postId - Post ID
-     * @param {Object} postData - Partial post data to update
-     * @returns {Promise} - Updated post
-     */
-    patchPost: (postId, postData) => {
-        return fetchAPI(`/api/main/post/${postId}/`, {
-            method: 'PATCH',
             body: JSON.stringify(postData),
         });
     },
@@ -247,10 +252,81 @@ export const postsAPI = {
      * @param {number} postId - Post ID
      * @returns {Promise} - Deletion confirmation
      */
-    deletePost: (postId) => {
-        return fetchAPI(`/api/main/post/${postId}/`, {
-            method: 'DELETE',
-        });
+    deletePost: async (postId) => {
+        const token = localStorage.getItem('auth_token');
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/main/post/delete/${postId}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            // Handle authentication errors with token refresh
+            if (response.status === 401) {
+                try {
+                    const newToken = await refreshAccessToken();
+
+                    const retryResponse = await fetch(`${API_BASE_URL}/api/main/post/delete/${postId}/`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${newToken}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!retryResponse.ok) {
+                        throw new Error(`Delete failed: ${retryResponse.status} ${retryResponse.statusText}`);
+                    }
+
+                    // For DELETE, often returns empty response (204 No Content)
+                    if (retryResponse.status === 204 || retryResponse.headers.get('content-length') === '0') {
+                        return { success: true };
+                    }
+
+                    try {
+                        return await retryResponse.json();
+                    } catch (parseError) {
+                        return { success: true }; // Assume success if no JSON to parse
+                    }
+
+                } catch (refreshError) {
+                    throw new Error('Session expired. Please log in again.');
+                }
+            }
+
+            // Handle other HTTP errors
+            if (!response.ok) {
+                let errorMessage;
+                try {
+                    const errorData = await response.json();
+                    errorMessage = errorData.detail || errorData.message || `Delete failed: ${response.status}`;
+                } catch (parseError) {
+                    errorMessage = `Delete failed: ${response.status} ${response.statusText}`;
+                }
+                throw new Error(errorMessage);
+            }
+
+            // Handle successful response
+            // DELETE often returns 204 No Content (empty response)
+            if (response.status === 204 || response.headers.get('content-length') === '0') {
+                return { success: true };
+            }
+
+            // Try to parse JSON response if there is content
+            try {
+                return await response.json();
+            } catch (parseError) {
+                // If JSON parsing fails but status is OK, consider it successful
+                return { success: true };
+            }
+
+        } catch (error) {
+            console.error('Delete post error:', error);
+            throw error;
+        }
     },
 
     /**
@@ -356,6 +432,77 @@ export const userAPI = {
             method: 'PUT',
             body: JSON.stringify(profileData),
         });
+    },
+
+    /**
+ * Update user profile with file upload (multipart form data)
+ * 
+  * @param {FormData} formData - FormData containing profile data and files
+ * @returns {Promise} - Updated user profile
+ */
+    updateProfileWithFile: async (formData) => {
+        const token = localStorage.getItem('auth_token');
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/user/update/`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                    // Don't set Content-Type - let browser set multipart boundary
+                },
+                body: formData
+            });
+
+            // Handle authentication errors
+            if (response.status === 401) {
+                // Try to refresh token
+                try {
+                    const newToken = await refreshAccessToken();
+
+                    // Retry with new token
+                    const retryResponse = await fetch(`${API_BASE_URL}/api/user/update/`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${newToken}`
+                        },
+                        body: formData
+                    });
+
+                    if (!retryResponse.ok) {
+                        const errorText = await retryResponse.text();
+                        console.error('Retry response error:', errorText);
+                        throw new Error(`API error: ${retryResponse.status} ${retryResponse.statusText}`);
+                    }
+
+                    return await retryResponse.json();
+                } catch (refreshError) {
+                    console.error('Token refresh failed:', refreshError);
+                    throw new Error('Session expired. Please log in again.');
+                }
+            }
+
+            // Handle other errors
+            if (!response.ok) {
+                let errorMessage;
+                try {
+                    const errorData = await response.json();
+                    errorMessage = errorData.detail || errorData.message || Object.values(errorData).flat().join(', ');
+                } catch (parseError) {
+                    const errorText = await response.text();
+                    console.error('Non-JSON error response:', errorText);
+                    errorMessage = `API error: ${response.status} ${response.statusText}`;
+                }
+                throw new Error(errorMessage);
+            }
+
+            // Parse successful response
+            const responseData = await response.json();
+            return responseData;
+
+        } catch (error) {
+            console.error('File upload error:', error);
+            throw error;
+        }
     },
 
     /**

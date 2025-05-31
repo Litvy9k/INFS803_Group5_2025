@@ -199,7 +199,7 @@ export default function PostsListPage() {
                                             key={post.id}
                                             post={post}
                                             upvotes={post.upvotes_count || post.upvotes || 0}
-                                            latest_reply_time={post.latest_reply_time}
+                                            last_replied_at={post.last_replied_at}
                                             formatRelativeTime={formatRelativeTime}
                                         />
                                     ))}
