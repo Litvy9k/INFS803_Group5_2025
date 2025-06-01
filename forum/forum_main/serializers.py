@@ -5,7 +5,7 @@ from .models import ForumPost, Reply
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ('id', 'username', 'nickname')
+        fields = ('id', 'username', 'nickname', 'avatar')
 
 class PostSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
@@ -17,7 +17,7 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'content', 'author', 'created_at', 'upvotes_count')
 
 class ReplySerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.username')
+    author = UserSerializer(read_only=True)
     upvotes = serializers.IntegerField(read_only=True)
     parent = serializers.PrimaryKeyRelatedField(
         queryset=Reply.objects.all(),
