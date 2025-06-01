@@ -91,9 +91,9 @@ export default function CreatePost() {
 
             // Redirect to the new post or home page
             if (response.id) {
-                router.push(`/post/${response.id}`);
+                router.push(`/posts/${response.id}`);
             } else {
-                router.push('/');
+                router.push('/posts');
             }
 
         } catch (err) {

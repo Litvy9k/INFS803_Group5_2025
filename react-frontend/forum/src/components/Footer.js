@@ -10,10 +10,7 @@ const Footer = () => {
                     {/* Logo and Description */}
                     <div className="col-span-1 md:col-span-1">
                         <Link href="/" className="flex items-center space-x-2">
-                            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                                <span className="text-white font-bold text-xl">GF</span>
-                            </div>
-                            <span className="text-white font-bold text-xl">GameForum</span>
+                            <img src="/logo.png" alt="logo" className='w-40' />
                         </Link>
                         <p className="mt-4 text-sm text-gray-300">
                             A community for gamers to discuss, share, and connect about their favorite games, strategies, and industry news.
@@ -25,15 +22,15 @@ const Footer = () => {
                         <h3 className="text-lg font-semibold text-white mb-4">Navigation</h3>
                         <ul className="space-y-2">
                             <li><Link href="/" className="text-gray-300 hover:text-primary transition-colors">Home</Link></li>
-                            <li><Link href="/categories" className="text-gray-300 hover:text-primary transition-colors">Categories</Link></li>
-                            <li><Link href="/popular" className="text-gray-300 hover:text-primary transition-colors">Popular</Link></li>
-                            <li><Link href="/recent" className="text-gray-300 hover:text-primary transition-colors">Recent</Link></li>
+                            <li><Link href="/posts" className="text-gray-300 hover:text-primary transition-colors">Posts</Link></li>
+                            <li><Link href="/posts/search" className="text-gray-300 hover:text-primary transition-colors">Search</Link></li>
+                            <li><Link href="/profile" className="text-gray-300 hover:text-primary transition-colors">User Profile</Link></li>
                         </ul>
                     </div>
 
                     {/* Resources */}
                     <div className="col-span-1">
-                        <h3 className="text-lg font-semibold text-white mb-4">Resources</h3>
+                        <h3 className="text-lg font-semibold text-white mb-4">Resources (Available later!)</h3>
                         <ul className="space-y-2">
                             <li><Link href="/rules" className="text-gray-300 hover:text-primary transition-colors">Community Rules</Link></li>
                             <li><Link href="/faq" className="text-gray-300 hover:text-primary transition-colors">FAQ</Link></li>
@@ -44,7 +41,7 @@ const Footer = () => {
 
                     {/* Connect */}
                     <div className="col-span-1">
-                        <h3 className="text-lg font-semibold text-white mb-4">Connect</h3>
+                        <h3 className="text-lg font-semibold text-white mb-4">Connect (Available later!)</h3>
                         <div className="flex space-x-4">
                             {/* Social Media Icons */}
                             <a href="#" className="text-gray-300 hover:text-primary transition-colors">

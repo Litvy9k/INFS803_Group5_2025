@@ -21,7 +21,7 @@ class ForumPost(models.Model):
     )
 
     @property
-    def upvotes(self):
+    def upvotes_count(self):
         return self.upvoted_by.count()
 
     def __str__(self):

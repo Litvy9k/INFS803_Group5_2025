@@ -82,17 +82,17 @@ const Reply = ({ reply, onReply, formatRelativeTime, level = 0 }) => {
         <div className={`bg-secondary/50 rounded-lg p-4 ${indentationClass}`}>
             {/* Reply Header */}
             <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-2">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
-                        <span className="text-xs font-bold text-primary">
-                            {reply.author.charAt(0).toUpperCase()}
-                        </span>
-                    </div>
-                    <span className="text-white text-sm font-medium">{reply.author}</span>
+                <Link href={`/profile/${reply.author.id}`} className="flex items-center space-x-2">
+                    <img
+                        src={reply.author.avatar}
+                        alt="Author Avatar"
+                        className="w-8 h-8 rounded-full ring-2 ring-primary/20"
+                    />
+                    <span className="text-white text-sm font-medium">{reply.author.nickname}</span>
                     <span className="text-gray-400 text-xs">
                         {formatRelativeTime(reply.created_at)}
                     </span>
-                </div>
+                </Link>
 
                 <div className="flex items-center space-x-2">
                     <button
@@ -583,15 +583,17 @@ export default function PostDetailPage() {
                             <div className="flex items-center space-x-4">
                                 {/* Author Info */}
                                 <div className="flex items-center space-x-2">
-                                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                                        <span className="text-sm font-bold text-primary">
-                                            {getAuthorDisplayName(post.author).charAt(0).toUpperCase()}
-                                        </span>
-                                    </div>
+                                    <img
+                                        src={post.author.avatar}
+                                        alt="Author Avatar"
+                                        className="w-8 h-8 rounded-full ring-2 ring-primary/20"
+                                    />
                                     <div>
-                                        <p className="text-white text-sm font-medium">
-                                            {getAuthorDisplayName(post.author)}
-                                        </p>
+                                        <Link href={`/profile/${post.author.id}`}>
+                                            <p className="text-white text-sm font-medium">
+                                                {getAuthorDisplayName(post.author)}
+                                            </p>
+                                        </Link>
                                         <p className="text-gray-400 text-xs">
                                             {formatRelativeTime(post.created_at)}
                                         </p>

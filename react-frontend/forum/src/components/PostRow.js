@@ -36,13 +36,6 @@ export default function PostRow({ post, formatRelativeTime }) {
             {/* Author Column */}
             <div className="col-span-2 text-center flex flex-col justify-center">
                 <div className="flex items-center justify-center space-x-2">
-                    {/* Author Avatar */}
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
-                        <span className="text-xs font-bold text-primary">
-                            {getAuthorDisplayName(post.author).charAt(0).toUpperCase()}
-                        </span>
-                    </div>
-
                     {/* Author Name */}
                     <span className="text-gray-300 text-sm truncate">
                         {getAuthorDisplayName(post.author)}

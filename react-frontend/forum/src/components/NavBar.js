@@ -120,13 +120,6 @@ const Navbar = () => {
                                                 Your Profile
                                             </Link>
                                             <Link
-                                                href="/posted-topics"
-                                                className="block px-4 py-2 text-sm text-gray-300 hover:bg-primary/10 hover:text-primary transition-colors duration-200"
-                                                onClick={() => setIsUserMenuOpen(false)}
-                                            >
-                                                My Topics
-                                            </Link>
-                                            <Link
                                                 href="/my-replies"
                                                 className="block px-4 py-2 text-sm text-gray-300 hover:bg-primary/10 hover:text-primary transition-colors duration-200"
                                                 onClick={() => setIsUserMenuOpen(false)}

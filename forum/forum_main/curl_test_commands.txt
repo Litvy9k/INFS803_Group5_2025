@@ -14,7 +14,7 @@ Register:
 curl -i -X POST http://127.0.0.1:8000/api/user/register/ -H "Content-Type: application/json" -d "{\"username\":\"whatever\",\"password\":\"wh4tever\",\"email\":\"whatever@whatever.com\",\"nickname\":\"whatever\"}"
 
 Create post:
-curl -i -X POST http://127.0.0.1:8000/api/main/post/create/ -H "Content-Type: application/json" -H "Authorization: Bearer $ACCESS_TOKEN" -d "{\"title\":\"POST DELETE TEST\",\"content\":\"whatever man\"}"
+    curl -i -X POST http://127.0.0.1:8000/api/main/post/create/ -H "Content-Type: application/json" -H "Authorization: Bearer $ACCESS_TOKEN" -d "{\"title\":\"POST DELETE TEST\",\"content\":\"whatever man\"}"
 
 Get post list:
 curl -i -X GET http://127.0.0.1:8000/api/main/post/ -H "Authorization: Bearer $ACCESS_TOKEN"
@@ -27,3 +27,9 @@ curl -i -X PATCH http://127.0.0.1:8000/api/main/post/edit/$post_id/ -H "Content-
 
 Upvote post:
 curl -i -X POST http://127.0.0.1:8000/api/main/post/upvote/$post_id/ -H "Authorization: Bearer $ACCESS_TOKEN"
+
+Sort post:
+curl -i -X GET "http://127.0.0.1:8000/api/main/post/sorted/?ordering=-upvotes" -H "Authorization: Bearer $ACCESS_TOKEN"
+
+Search post:
+curl -i -X GET "http://127.0.0.1:8000/api/main/post/search/?search=<content>" -H "Authorization: Bearer $ACCESS_TOKEN"
