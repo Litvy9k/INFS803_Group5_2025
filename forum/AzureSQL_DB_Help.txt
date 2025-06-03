@@ -37,6 +37,7 @@ brew install unixodbc
 brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release
 brew update
 HOMEBREW_ACCEPT_EULA=Y brew install msodbcsql18 mssql-tools18
+pip install django-cors-headers
 
 Windows:
 pip install django==4.2.21
@@ -46,6 +47,7 @@ pip install djangorestframework
 pip install python-environ
 pip install Pillow
 pip install djangorestframework-simplejwt
+pip install django-cors-headers
 
 Manually install OBDC driver: (download x64 version - first link)
 https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16
