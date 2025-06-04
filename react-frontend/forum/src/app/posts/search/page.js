@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import PostCard, { PostCardSkeleton } from '@/components/Card';
 import { postsAPI } from '@/app/services/apiService';
 
-export default function SearchResults() {
+// Separate component that uses useSearchParams
+function SearchContent() {
     const [searchQuery, setSearchQuery] = useState('');
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +16,15 @@ export default function SearchResults() {
 
     const router = useRouter();
     const searchParams = useSearchParams();
+
+    // Initialize search query from URL params
+    useEffect(() => {
+        const q = searchParams.get('q');
+        if (q) {
+            setSearchQuery(q);
+            performSearch(q);
+        }
+    }, [searchParams]);
 
     // Perform search API call
     const performSearch = async (query) => {
@@ -50,8 +60,12 @@ export default function SearchResults() {
     // Handle search form submission
     const handleSearch = (e) => {
         e.preventDefault();
-        setPosts(performSearch(searchQuery.trim()))
-
+        const trimmedQuery = searchQuery.trim();
+        if (trimmedQuery) {
+            // Update URL with search query
+            router.push(`/posts/search?q=${encodeURIComponent(trimmedQuery)}`);
+            performSearch(trimmedQuery);
+        }
     };
 
     // Handle input change
@@ -203,11 +217,11 @@ export default function SearchResults() {
                         /* No Results State */
                         <div className="text-center py-20">
                             <svg className="w-24 h-24 mx-auto text-gray-400 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0118 12M6 20.291A7.962 7.962 0 016 12m0 8.291A7.962 7.962 0 016 12m0 8.291A7.962 7.962 0 016 12" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0718 12M6 20.291A7.962 7.962 0 016 12m0 8.291A7.962 7.962 0 016 12m0 8.291A7.962 7.962 0 716 12" />
                             </svg>
                             <h2 className="text-2xl font-semibold text-gray-300 mb-4">No Results Found</h2>
                             <p className="text-gray-400 max-w-md mx-auto mb-6">
-                                We couldn't find any posts matching "{searchParams.get('q')}". Try different keywords or check your spelling.
+                                We couldn't find any posts matching "{searchQuery}". Try different keywords or check your spelling.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                 <button
@@ -279,5 +293,38 @@ export default function SearchResults() {
                 )}
             </div>
         </div>
+    );
+}
+
+// Loading fallback component
+function SearchFallback() {
+    return (
+        <div className="min-h-screen bg-background">
+            <div className="border-b border-primary/30 bg-background/95 backdrop-blur-sm z-40">
+                <div className="container-custom py-6">
+                    <h1 className="text-3xl font-bold text-white mb-6">Search Posts</h1>
+                    <div className="relative max-w-4xl">
+                        <div className="relative">
+                            <div className="w-full bg-secondary/60 border border-primary/40 rounded-full py-4 px-6 pl-14 pr-20 text-lg animate-pulse h-16"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="container-custom py-8">
+                <div className="text-center py-20">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+                    <p className="text-gray-300">Loading search...</p>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// Main component with Suspense boundary
+export default function SearchResults() {
+    return (
+        <Suspense fallback={<SearchFallback />}>
+            <SearchContent />
+        </Suspense>
     );
 }

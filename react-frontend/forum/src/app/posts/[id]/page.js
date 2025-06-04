@@ -139,7 +139,7 @@ const Reply = ({ reply, onReply, formatRelativeTime, level = 0 }) => {
                 <form onSubmit={handleReplySubmit} className="mt-4 p-3 bg-background/30 rounded-lg">
                     <div className="mb-3">
                         <label className="block text-sm font-medium text-gray-300 mb-2">
-                            Reply to {reply.author}
+                            Reply to {reply.author.nickname}
                         </label>
                         <textarea
                             value={replyContent}

@@ -14,8 +14,17 @@ export default function PostsListPage() {
     const [totalPosts, setTotalPosts] = useState(0);
     const [sortBy, setSortBy] = useState('recent'); // 'recent', 'upvotes'
     const [sortOrder, setSortOrder] = useState('desc'); // 'asc', 'desc'
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isClient, setIsClient] = useState(false);
 
     const postsPerPage = 20;
+
+    // Check if we're on the client side and if user is authenticated
+    useEffect(() => {
+        setIsClient(true);
+        const token = localStorage.getItem('auth_token');
+        setIsAuthenticated(!!token);
+    }, []);
 
     // Fetch posts from API
     const fetchPosts = async (page = 1, sort = sortBy, order = sortOrder) => {
@@ -93,14 +102,19 @@ export default function PostsListPage() {
                         </p>
                     </div>
 
-                    {/* Create Post Button */}
-                    {localStorage.getItem('auth_token') ? <Link href="/posts/create" className="btn-primary flex">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                        New Post
-                    </Link> :
-                        <div className="text-[#2dde94]">Sign in to post a new topic!</div>}
+                    {/* Create Post Button - Only render after client-side hydration */}
+                    {isClient && (
+                        isAuthenticated ? (
+                            <Link href="/posts/create" className="btn-primary flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                </svg>
+                                New Post
+                            </Link>
+                        ) : (
+                            <div className="text-[#2dde94]">Sign in to post a new topic!</div>
+                        )
+                    )}
                 </div>
 
                 {/* Sort Controls */}
@@ -188,9 +202,11 @@ export default function PostsListPage() {
                                     </svg>
                                     <h3 className="text-lg font-medium text-white mb-2">No posts yet</h3>
                                     <p className="text-gray-400 mb-4">Be the first to start a discussion!</p>
-                                    <Link href="/posts/create" className="btn-primary">
-                                        Create First Post
-                                    </Link>
+                                    {isClient && isAuthenticated && (
+                                        <Link href="/posts/create" className="btn-primary">
+                                            Create First Post
+                                        </Link>
+                                    )}
                                 </div>
                             ) : (
                                 <div>
@@ -272,4 +288,4 @@ export default function PostsListPage() {
             </div>
         </div>
     );
-} 
+}
