@@ -93,14 +93,15 @@ WSGI_APPLICATION = 'forum.wsgi.application'
 #     }
 # }
 
+# Database configuration for Microsoft SQL Server, using environment variables for sensitive information
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'forumDatabaseNew',
-        'USER': 'forumadmin',
-        'PASSWORD': 'y5PPXf62XpaTyuj',
-        'HOST': 'newforumserver.database.windows.net',
-        'PORT': '1433',
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
         'OPTIONS': {
             'driver': 'ODBC Driver 18 for SQL Server',
             'encrypt': True,
